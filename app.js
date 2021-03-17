@@ -14,7 +14,7 @@ mongoose.connect( mongoUrl, {
 
 }).then(result => app.listen(3000 , () =>{
 
-  console.log('server is lisning in http://localhost/3000');
+  console.log('server is lisning in http://localhost:3000');
 
 })).catch(error => console.log(error));
  
@@ -85,18 +85,16 @@ app.get('/findOneById/:id',(req,res)=>{
 
 
 
+app.delete ('/delete/:id' , (req,res)=>{
+_id = req.params.id
+Blog.findByIdAndDelete(_id)
+.then ( ()=> {res.send('deleted')})
+.catch (err => console.log(err))
 
+})
 
-
-
-
-
-
-
-// app.delete ('/delete' , (req,res)=>{
-
-// Blog.findById()
-
-// })
-
-
+app.put('/edit' , (req,res)=> {
+    Blog.findByIdAndUpdate({_id : "6050d3dcfdfb061bd8ae1cd7"},{title:"new title"} ,{new:true})
+    .then(result => {res.send(result)})
+    .catch (err => console.log(err))
+})
