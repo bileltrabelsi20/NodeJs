@@ -78,7 +78,6 @@ app.get('/findOneById',(req,res)=>{
 
 app.get('/findOneById/:id',(req,res)=>{
   id = req.params.id
-  console.log(id);
   Blog.findById(id)
   .then(result => {res.send(result)})
   .catch (err => console.log(err))
