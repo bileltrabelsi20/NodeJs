@@ -104,9 +104,13 @@ app.put('/edit' , (req,res)=> {
     .catch (err => console.log(err))
 })
 
-////////////////////// USER_SCHEMA ////////////////////////////
 
-        ////// aj
+
+
+////////////////////// ///////////////////////////   USER_SCHEMA ///////////////////////////////////////////////////////////
+
+
+///////////////////// add new user  //////////////////////////
 
 app.post('/addNewUser', jsonParser, (req,res) => {
 
@@ -115,9 +119,9 @@ app.post('/addNewUser', jsonParser, (req,res) => {
     .catch ( error => console.log(error))
   })
 
-
- /////////////////////////////////////////////////////////////
  
+ ////////////// find user par son id ////////////////////////
+
  
   app.get('/findUserById',(req,res)=>{
     User.findOne({ _id: '60521e035de86e06ccbbe898' })
@@ -126,10 +130,63 @@ app.post('/addNewUser', jsonParser, (req,res) => {
   })
 
 
+//////////////// find by id and delete that id ///////////////
 
-  app.delete('/deleteUser/:id',(req,res)=> {
+
+  app.delete('/deleteUserById/:id',(req,res)=> {
     _id=req.params.id
     User.findByIdAndDelete(_id)
     .then (()=>{res.send('deleted , verifier data base')})
     .catch (err => console.log("err"))
   })
+
+///////////// a chaque fois je clique je delite /////////////
+
+app.delete('/deleteUser/:id',(req,res)=> {
+  _id=req.params.id
+  User.findOneAndDelete(_id)
+  .then (()=>{res.send('deleted , verifier data base')})
+  .catch (err => console.log("err"))
+})
+
+/////////////////// find all users /////////////////////////
+
+app.get('/findAllUsers',(req,res)=>{
+  User.find()
+  .then(result => {res.send(result)})
+  .catch (err => console.log(err))
+})
+
+
+///////////////////// find by id ////////////////////////
+
+app.get ('/findUserById/:id' , (req,res) => {
+  id = req.params.id
+  User.findById(id)
+  .then(result => {res.send(result)})
+  .catch (err => console.log(err))
+
+})
+
+
+
+
+app.get ('/findOneUser' , (req,res) => {
+
+  User.findOne({ email: 'aaaaaaaaaaaaa@gmail.com' })
+  .then(result => {res.send(result)})
+  .catch (err => console.log(err))
+
+})
+
+
+///////////////UPDATE USER /////////////////////////////
+
+app.put('/editUser' , (req,res)=> {
+  User.findByIdAndUpdate({_id : "6053641c3fe00615b8be8277"},{password:"5555"} ,{new:true})
+  .then(result => {res.send(result)})
+  .catch (err => console.log(err))
+})
+
+
+
