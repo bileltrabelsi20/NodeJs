@@ -1,11 +1,15 @@
-const {tab1} = require ('./exercice')
-const express = require('express') 
-const app = express() 
+const {tab1} = require ('./exercice');
+const express = require('express') ;
+const app = express() ;
+var bodyParser = require('body-parser')  
+
 const mongoose = require('mongoose');
 const Blog = require ('./models/todo');
-const mongoUrl ="mongodb+srv://bilel:trabelsi@cluster0.dn70h.mongodb.net/bilelDataBase?retryWrites=true&w=majority"
+const mongoUrl ="mongodb+srv://bilel:trabelsi@cluster0.dn70h.mongodb.net/bilelDataBase?retryWrites=true&w=majority";
+const User = require ('./models/user');
 
-
+var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 mongoose.connect( mongoUrl, {
 
@@ -17,16 +21,17 @@ mongoose.connect( mongoUrl, {
   console.log('server is lisning in http://localhost:3000');
 
 })).catch(error => console.log(error));
- 
+
 
 //////////test server ////////
 app.get('/', function (req, res) {
 
   res.send('xzzxx')
-  
+
 })
 
 ////////post///////ajout blog
+
 app.post('/add' , (req,res) => {
 
   const blog = new Blog({
@@ -35,7 +40,7 @@ app.post('/add' , (req,res) => {
     body : "yyyyy"
 
   });
-
+// req.body
   blog.save()
   .then (result => {res.send(result)})
   .catch ( error => console.log(error))
@@ -98,3 +103,33 @@ app.put('/edit' , (req,res)=> {
     .then(result => {res.send(result)})
     .catch (err => console.log(err))
 })
+
+////////////////////// USER_SCHEMA ////////////////////////////
+
+        ////// aj
+
+app.post('/addNewUser', jsonParser, (req,res) => {
+
+    User.create(req.body)
+    .then (result => {res.json(result)})
+    .catch ( error => console.log(error))
+  })
+
+
+ /////////////////////////////////////////////////////////////
+ 
+ 
+  app.get('/findUserById',(req,res)=>{
+    User.findOne({ _id: '60521e035de86e06ccbbe898' })
+    .then(result => {res.send(result)})
+    .catch (err => console.log(err))
+  })
+
+
+
+  app.delete('/deleteUser/:id',(req,res)=> {
+    _id=req.params.id
+    User.findByIdAndDelete(_id)
+    .then (()=>{res.send('deleted , verifier data base')})
+    .catch (err => console.log("err"))
+  })
